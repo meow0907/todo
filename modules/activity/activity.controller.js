@@ -1,13 +1,26 @@
+const model = require("./activity.model")
 //CRUD
 
-const create =(payload)=>{};
+const create = async(payload)=>{
+    return await model.create(payload);
+};
 
-const list = ()=>{};
+const list = async()=>{
+    return await model.find();
+};
 
-const getById =(id)=>{};
+const getById =async(id)=>{
+    return await model.findOne({_id: id});
+};
 
-const updateById =(id, payload)=>{};
+const updateById =async(id, payload)=>{
+    return await model.findOneAndUpdate({_id: id}, payload, {new: true})  // new-> recent document pass garna
 
-const removeById = (id)=>{};
+};
+
+const removeById = async(id)=>{
+    return await model.deleteOne({_id: id});
+};
 
 module.exports = {create, list, getById, updateById, removeById};
+
