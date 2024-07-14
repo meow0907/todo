@@ -20,3 +20,4 @@ app.use((err,req,res,next)=>{
 app.listen(PORT,()=>{
     console.log(`Application is running on port ${PORT}`);
 });
+

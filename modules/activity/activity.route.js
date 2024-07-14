@@ -12,6 +12,16 @@ router.get("/", async (req, res, next) => {
     }
 });
 
+router.get("/get-all", async (req, res, next) => {
+  try{
+      console.log(req.query);
+      const data = await Controller.getAll(req.query);
+      res.json({ data, msg: "list of all the activities with sub-activities" });
+  } catch(e){
+      next(e);
+  }
+});
+
 router.get("/:id", async(req, res, next) => {
   try {
     const data = await Controller.getById(req.params.id);
@@ -38,7 +48,7 @@ router.post("/", async (req, res, next) => {
 router.patch("/:id", async(req, res, next) => {
     try{
         const data = await Controller.updateById(req.params.id, req.body);
-        res.json({ data: req.body, msg: "updated activity" });
+        res.json({ data, msg: "updated sub-activity" });
     } catch (e)
 {
     next(e);
@@ -49,7 +59,7 @@ router.patch("/:id", async(req, res, next) => {
 router.delete("/:id", async(req, res, next) => {
     try{
     const data = await Controller.removeById(req.params.id);
-  res.json({ data, msg:"deleted activity" });
+  res.json({ data, msg:"deleted sub-activity" });
 } catch (e){
     next(e);
 }
