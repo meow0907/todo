@@ -1,7 +1,12 @@
-const model = require("./activity.model")
+const { Model } = require("mongoose");
+const model = require("./activity.model");
+const subactivityModel = require("../subActivity/subactivity.model");
 //CRUD
 
 const create = async(payload)=>{
+    // payload.createdAt = new Date();
+    // payload.updatedAt = new Date();
+
     return await model.create(payload);
 };
 
@@ -49,12 +54,23 @@ const getById =async(id)=>{
 };
 
 const updateById =async(id, payload)=>{
-    return await model.findOneAndUpdate({_id: id}, payload, {new: true})  // new-> recent document pass garna
-
+    const activityResult = await model.findOneAndUpdate({_id: id}, payload, {
+        new:true,    // new-> recent document pass garna
+    });
+    if(!activityResult) throw new Error("Activity Update Failed");
+    if (activityResult.isCompleted){
+        await subactivityModel.updateMany(
+           { activity: activityResult._id},
+        { isCompleted:true}
+    );
+    }
+    return activityResult;
 };
 //if updatebyid ma status true aacha vane iscompleted lai true garne
-// if false aacha vane 
+// if false aacha vane --------------
 
+
+//----------------------------------------------------------------------------
 const removeById = async(id)=>{
     return await model.deleteOne({_id: id});
 };
